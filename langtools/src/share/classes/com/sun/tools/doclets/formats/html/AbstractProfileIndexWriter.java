@@ -66,23 +66,23 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
     /**
      * Adds the navigation bar header to the documentation tree.
      *
-     * @param body the document tree to which the navigation bar header will be added
+     * @param header the document tree to which the navigation bar header will be added
      */
-    protected abstract void addNavigationBarHeader(Content body);
+    protected abstract void addNavigationBarHeader(Content header);
 
     /**
      * Adds the navigation bar footer to the documentation tree.
      *
-     * @param body the document tree to which the navigation bar footer will be added
+     * @param footer the document tree to which the navigation bar footer will be added
      */
-    protected abstract void addNavigationBarFooter(Content body);
+    protected abstract void addNavigationBarFooter(Content footer);
 
     /**
      * Adds the overview header to the documentation tree.
      *
-     * @param body the document tree to which the overview header will be added
+     * @param header the document tree to which the overview header will be added
      */
-    protected abstract void addOverviewHeader(Content body);
+    protected abstract void addOverviewHeader(Content header);
 
     /**
      * Adds the profiles list to the documentation tree.
@@ -101,11 +101,11 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param profiles profiles object
      * @param text caption for the table
      * @param tableSummary summary for the table
-     * @param body the document tree to which the profiles list will be added
+     * @param main the document tree to which the profiles list will be added
      * @param profileName the name for the profile being documented
      */
     protected abstract void addProfilePackagesList(Profiles profiles, String text,
-            String tableSummary, Content body, String profileName);
+            String tableSummary, Content main, String profileName);
 
     /**
      * Generate and prints the contents in the profile index file. Call appropriate

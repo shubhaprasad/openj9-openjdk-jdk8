@@ -789,4 +789,14 @@ public class Util {
                 elt.name().contentEquals(ElementType.PARAMETER.name()) ||
                 elt.name().contentEquals(ElementType.TYPE.name());
     }
+//Shubha
+    /**
+     * Returns a locale independent lower cased String. That is, it
+     * always uses US locale, this is a clone of the one in StringUtils.
+     * @param s to convert
+     * @return converted String
+     */
+    public static String toLowerCase(String s) {
+        return s.toLowerCase(Locale.US);
+    }
 }

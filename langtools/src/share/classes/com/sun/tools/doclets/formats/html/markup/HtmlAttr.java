@@ -25,6 +25,7 @@
 
 package com.sun.tools.doclets.formats.html.markup;
 
+import com.sun.tools.example.debug.bdi.Utils;
 import com.sun.tools.javac.util.StringUtils;
 
 /**
@@ -53,6 +54,7 @@ public enum HtmlAttr {
     NAME,
     ONLOAD,
     REL,
+    ROLE,
     ROWS,
     SCOPE,
     SCROLLING,
@@ -65,6 +67,24 @@ public enum HtmlAttr {
 
     private final String value;
 
+    public enum Role {
+
+        BANNER,
+        CONTENTINFO,
+        MAIN,
+        NAVIGATION,
+        REGION;
+
+        private final String role;
+
+        Role() {
+            role = Utils.toLowerCase(name());
+        }
+
+        public String toString() {
+            return role;
+        }
+    }
     HtmlAttr() {
         this.value = StringUtils.toLowerCase(name());
     }

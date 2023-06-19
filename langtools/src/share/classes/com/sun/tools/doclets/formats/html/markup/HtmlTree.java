@@ -33,6 +33,8 @@ import java.nio.charset.*;
 import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.*;
 
+import javax.management.relation.Role;
+
 /**
  * Class for generating HTML tree for javadoc output.
  *
@@ -114,6 +116,17 @@ public class HtmlTree extends Content {
         }
     }
 
+    /**
+     * Sets the "role" attribute for this tag.
+     *
+     * @param role the role
+     * @return this object
+     */
+    //Shubha
+    public HtmlTree setRole(Role role) {
+        addAttr(HtmlAttr.ROLE, role.toString());
+        return this;
+    }
     /**
      * This method adds a string content to the htmltree. If the last content member
      * added is a StringContent, append the string to that StringContent or else
@@ -606,6 +619,16 @@ public class HtmlTree extends Content {
         return htmltree;
     }
 
+    /**
+     * Generates a MAIN tag with role attribute.
+     *
+     * @return an HtmlTree object for the MAIN tag
+     */
+    public static HtmlTree MAIN() {
+        HtmlTree htmltree = new HtmlTree(HtmlTag.MAIN);
+        htmltree.setRole(Role.MAIN);
+        return htmltree;
+    }
     /**
      * Generates a SPAN tag with id and style class attributes. It also encloses
      * a content.

@@ -29,9 +29,14 @@ import java.io.*;
 import java.util.*;
 
 import com.sun.javadoc.*;
+import com.sun.javadoc.PackageDoc;
 import com.sun.tools.doclets.formats.html.markup.*;
 import com.sun.tools.doclets.internal.toolkit.*;
+import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.DocPath;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Abstract class to generate the overview files in
@@ -68,23 +73,23 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
     /**
      * Adds the navigation bar header to the documentation tree.
      *
-     * @param body the document tree to which the navigation bar header will be added
+     * @param header the document tree to which the navigation bar header will be added
      */
-    protected abstract void addNavigationBarHeader(Content body);
+    protected abstract void addNavigationBarHeader(Content header);
 
     /**
      * Adds the navigation bar footer to the documentation tree.
      *
-     * @param body the document tree to which the navigation bar footer will be added
+     * @param footer the document tree to which the navigation bar footer will be added
      */
-    protected abstract void addNavigationBarFooter(Content body);
+    protected abstract void addNavigationBarFooter(Content footer);
 
     /**
      * Adds the overview header to the documentation tree.
      *
-     * @param body the document tree to which the overview header will be added
+     * @param main the document tree to which the overview header will be added
      */
-    protected abstract void addOverviewHeader(Content body);
+    protected abstract void addOverviewHeader(Content main);
 
     /**
      * Adds the packages list to the documentation tree.
@@ -92,10 +97,10 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
      * @param packages an array of packagedoc objects
      * @param text caption for the table
      * @param tableSummary summary for the table
-     * @param body the document tree to which the packages list will be added
+     * @param main the document tree to which the packages list will be added
      */
     protected abstract void addPackagesList(PackageDoc[] packages, String text,
-            String tableSummary, Content body);
+            String tableSummary, Content main);
 
     /**
      * Generate and prints the contents in the package index file. Call appropriate
@@ -108,10 +113,11 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
     protected void buildPackageIndexFile(String title, boolean includeScript) throws IOException {
         String windowOverview = configuration.getText(title);
         Content body = getBody(includeScript, getWindowTitle(windowOverview));
-        addNavigationBarHeader(body);
-        addOverviewHeader(body);
+        Content main = createTagIfAllowed(HtmlTag.MAIN, HtmlTree::MAIN, ContentBuilder::new);
+        addNavigationBarHeader(main);
+        addOverviewHeader(main);
         addIndex(body);
-        addOverview(body);
+        addOverview(main);
         addNavigationBarFooter(body);
         printHtmlDocument(configuration.metakeywords.getOverviewMetaKeywords(title,
                 configuration.doctitle), includeScript, body);

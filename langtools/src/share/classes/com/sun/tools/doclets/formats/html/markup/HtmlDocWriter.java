@@ -27,6 +27,7 @@ package com.sun.tools.doclets.formats.html.markup;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Supplier;
 
 import com.sun.javadoc.*;
 import com.sun.tools.doclets.formats.html.ConfigurationImpl;
@@ -66,13 +67,16 @@ public abstract class HtmlDocWriter extends HtmlWriter {
             throws IOException {
         super(configuration, filename);
         configuration.message.notice("doclet.Generating_0",
-            DocFile.createFileForOutput(configuration, filename).getPath());
+                DocFile.createFileForOutput(configuration, filename).getPath());
     }
 
     /**
      * Accessor for configuration.
      */
     public abstract Configuration configuration();
+
+    //Shubha
+    public ConfigurationImpl configurationimpl;
 
     public Content getHyperLink(DocPath link, String label) {
         return getHyperLink(link, new StringContent(label), false, "", "", "");
@@ -81,47 +85,47 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     /**
      * Get Html Hyper Link Content.
      *
-     * @param where      Position of the link in the file. Character '#' is not
-     *                   needed.
-     * @param label      Tag for the link.
+     * @param where Position of the link in the file. Character '#' is not
+     *              needed.
+     * @param label Tag for the link.
      * @return a content tree for the hyper link
      */
     public Content getHyperLink(String where,
-                               Content label) {
+                                Content label) {
         return getHyperLink(getDocLink(where), label, "", "");
     }
 
     /**
      * Get Html Hyper Link Content.
      *
-     * @param sectionName      The section name to which the link will be created.
-     * @param label            Tag for the link.
+     * @param sectionName The section name to which the link will be created.
+     * @param label       Tag for the link.
      * @return a content tree for the hyper link
      */
     public Content getHyperLink(SectionName sectionName,
-                               Content label) {
+                                Content label) {
         return getHyperLink(getDocLink(sectionName), label, "", "");
     }
 
     /**
      * Get Html Hyper Link Content.
      *
-     * @param sectionName      The section name combined with where to which the link
-     *                         will be created.
-     * @param where            The fragment combined with sectionName to which the link
-     *                         will be created.
-     * @param label            Tag for the link.
+     * @param sectionName The section name combined with where to which the link
+     *                    will be created.
+     * @param where       The fragment combined with sectionName to which the link
+     *                    will be created.
+     * @param label       Tag for the link.
      * @return a content tree for the hyper link
      */
     public Content getHyperLink(SectionName sectionName, String where,
-                               Content label) {
+                                Content label) {
         return getHyperLink(getDocLink(sectionName, where), label, "", "");
     }
 
     /**
      * Get the link.
      *
-     * @param where      Position of the link in the file.
+     * @param where Position of the link in the file.
      * @return a DocLink object for the hyper link
      */
     public DocLink getDocLink(String where) {
@@ -131,7 +135,7 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     /**
      * Get the link.
      *
-     * @param sectionName      The section name to which the link will be created.
+     * @param sectionName The section name to which the link will be created.
      * @return a DocLink object for the hyper link
      */
     public DocLink getDocLink(SectionName sectionName) {
@@ -141,10 +145,10 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     /**
      * Get the link.
      *
-     * @param sectionName      The section name combined with where to which the link
-     *                         will be created.
-     * @param where            The fragment combined with sectionName to which the link
-     *                         will be created.
+     * @param sectionName The section name combined with where to which the link
+     *                    will be created.
+     * @param where       The fragment combined with sectionName to which the link
+     *                    will be created.
      * @return a DocLink object for the hyper link
      */
     public DocLink getDocLink(SectionName sectionName, String where) {
@@ -212,8 +216,8 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     /**
      * Get Html hyperlink.
      *
-     * @param link       path of the file.
-     * @param label      Tag for the link.
+     * @param link  path of the file.
+     * @param label Tag for the link.
      * @return a content tree for the hyper link
      */
     public Content getHyperLink(DocPath link, Content label) {
@@ -225,15 +229,15 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     }
 
     public Content getHyperLink(DocPath link,
-                               Content label, boolean strong,
-                               String stylename, String title, String target) {
+                                Content label, boolean strong,
+                                String stylename, String title, String target) {
         return getHyperLink(new DocLink(link), label, strong,
                 stylename, title, target);
     }
 
     public Content getHyperLink(DocLink link,
-                               Content label, boolean strong,
-                               String stylename, String title, String target) {
+                                Content label, boolean strong,
+                                String stylename, String title, String target) {
         Content body = label;
         if (strong) {
             body = HtmlTree.SPAN(HtmlStyle.typeNameLink, body);
@@ -256,19 +260,19 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     /**
      * Get Html Hyper Link.
      *
-     * @param link       String name of the file.
-     * @param label      Tag for the link.
-     * @param title      String that describes the link's content for accessibility.
-     * @param target     Target frame.
+     * @param link   String name of the file.
+     * @param label  Tag for the link.
+     * @param title  String that describes the link's content for accessibility.
+     * @param target Target frame.
      * @return a content tree for the hyper link.
      */
     public Content getHyperLink(DocPath link,
-            Content label, String title, String target) {
+                                Content label, String title, String target) {
         return getHyperLink(new DocLink(link), label, title, target);
     }
 
     public Content getHyperLink(DocLink link,
-            Content label, String title, String target) {
+                                Content label, String title, String target) {
         HtmlTree anchor = HtmlTree.A(link.toString(), label);
         if (title != null && title.length() != 0) {
             anchor.addAttr(HtmlAttr.TITLE, title);
@@ -282,7 +286,7 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     /**
      * Get the name of the package, this class is in.
      *
-     * @param cd    ClassDoc.
+     * @param cd ClassDoc.
      */
     public String getPkgName(ClassDoc cd) {
         String pkgName = cd.containingPackage().name();
@@ -301,12 +305,12 @@ public abstract class HtmlDocWriter extends HtmlWriter {
      * Print the frameset version of the Html file header.
      * Called only when generating an HTML frameset file.
      *
-     * @param title Title of this HTML document
+     * @param title       Title of this HTML document
      * @param noTimeStamp If true, don't print time stamp in header
-     * @param frameset the frameset to be added to the HTML document
+     * @param frameset    the frameset to be added to the HTML document
      */
     public void printFramesetDocument(String title, boolean noTimeStamp,
-            Content frameset) throws IOException {
+                                      Content frameset) throws IOException {
         Content htmlDocType = DocType.FRAMESET;
         Content htmlComment = new Comment(configuration.getText("doclet.New_Page"));
         Content head = new HtmlTree(HtmlTag.HEAD);
@@ -331,8 +335,18 @@ public abstract class HtmlDocWriter extends HtmlWriter {
         if (timestamp) {
             Calendar calendar = new GregorianCalendar(TimeZone.getDefault());
             Date today = calendar.getTime();
-            text += " ("+ configuration.getDocletSpecificBuildDate() + ") on " + today;
+            text += " (" + configuration.getDocletSpecificBuildDate() + ") on " + today;
         }
         return new Comment(text);
+    }
+
+    protected Content createTagIfAllowed(HtmlTag tag, Supplier<Content> ifSupported, Supplier<Content> ifNotSupported) {
+        if (configurationimpl.allowTag(tag)) {
+            return ifSupported.get();
+        }
+        else
+        {
+            return ifNotSupported.get();
+        }
     }
 }

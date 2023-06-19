@@ -25,6 +25,7 @@
 
 package com.sun.tools.doclets.formats.html.markup;
 
+import com.sun.tools.doclets.internal.toolkit.util.Util;
 import com.sun.tools.javac.util.StringUtils;
 
 /**
@@ -43,15 +44,16 @@ public enum HtmlTag {
     BODY(BlockType.OTHER, EndTag.END),
     BR(BlockType.INLINE, EndTag.NOEND),
     CAPTION,
-    CENTER,
+    CENTER(HtmlVersion.HTML4),
     CODE(BlockType.INLINE, EndTag.END),
     DD,
-    DIR,
+    DIR(HtmlVersion.HTML4),
     DIV,
     DL,
     DT,
     EM(BlockType.INLINE, EndTag.END),
-    FONT(BlockType.INLINE, EndTag.END),
+    FONT(HtmlVersion.HTML4, BlockType.INLINE, EndTag.END),
+    FOOTER(HtmlVersion.HTML5),
     FRAME(BlockType.OTHER, EndTag.NOEND),
     FRAMESET(BlockType.OTHER, EndTag.END),
     H1,
@@ -61,6 +63,7 @@ public enum HtmlTag {
     H5,
     H6,
     HEAD(BlockType.OTHER, EndTag.END),
+    HEADER(HtmlVersion.HTML5),
     HR(BlockType.BLOCK, EndTag.NOEND),
     HTML(BlockType.OTHER, EndTag.END),
     I(BlockType.INLINE, EndTag.END),
@@ -68,14 +71,17 @@ public enum HtmlTag {
     LI,
     LISTING,
     LINK(BlockType.OTHER, EndTag.NOEND),
+    MAIN(HtmlVersion.HTML5),
     MENU,
     META(BlockType.OTHER, EndTag.NOEND),
+    NAV(HtmlVersion.HTML5),
     NOFRAMES(BlockType.OTHER, EndTag.END),
     NOSCRIPT(BlockType.OTHER, EndTag.END),
     OL,
     P,
     PRE,
     SCRIPT(BlockType.OTHER, EndTag.END),
+    SECTION(HtmlVersion.HTML5),
     SMALL(BlockType.INLINE, EndTag.END),
     SPAN(BlockType.INLINE, EndTag.END),
     STRONG(BlockType.INLINE, EndTag.END),
@@ -86,12 +92,14 @@ public enum HtmlTag {
     TH,
     TITLE(BlockType.OTHER, EndTag.END),
     TR,
-    TT(BlockType.INLINE, EndTag.END),
+    TT(HtmlVersion.HTML4, BlockType.INLINE, EndTag.END),
     UL;
 
     public final BlockType blockType;
     public final EndTag endTag;
     public final String value;
+   public final HtmlVersion htmlVersion;
+
 
     /**
      * Enum representing the type of HTML element.
@@ -111,15 +119,24 @@ public enum HtmlTag {
     }
 
     HtmlTag() {
-        this(BlockType.BLOCK, EndTag.END);
+        this(HtmlVersion.ALL, BlockType.BLOCK, EndTag.END);
     }
 
+    HtmlTag(HtmlVersion htmlVersion) {
+        this(htmlVersion, BlockType.BLOCK, EndTag.END);
+    }
     HtmlTag(BlockType blockType, EndTag endTag ) {
         this.blockType = blockType;
         this.endTag = endTag;
         this.value = StringUtils.toLowerCase(name());
     }
 
+    HtmlTag(HtmlVersion htmlVersion, BlockType blockType, EndTag endTag ) {
+        this.htmlVersion = htmlVersion;
+        this.blockType = blockType;
+        this.endTag = endTag;
+        this.value = Util.toLowerCase(name());
+    }
     /**
      * Returns true if the end tag is required. This is specific to the standard
      * doclet and does not exactly resemble the W3C specifications.
@@ -133,4 +150,16 @@ public enum HtmlTag {
     public String toString() {
         return value;
     }
+
+    /**
+     * Returns true if the tag is allowed in the output HTML version of this javadoc run.
+     *
+     * @param htmlVer the output HTML version for this javadoc run
+     * @return true if the tag is allowed
+     */
+    public boolean allowTag(HtmlVersion htmlVer) {
+        return (this.htmlVersion == HtmlVersion.ALL || this.htmlVersion == htmlVer);
+    }
+
+
 }
