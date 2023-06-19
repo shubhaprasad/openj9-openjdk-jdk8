@@ -203,7 +203,6 @@ public class ConfigurationImpl extends Configuration {
      * The classdoc for the class file getting generated.
      */
     public ClassDoc currentcd = null;  // Set this classdoc in the ClassWriter.
-    private HtmlVersion htmlVersion;
 
     /**
      * Constructor. Initializes resource for the
@@ -637,12 +636,5 @@ public class ConfigurationImpl extends Configuration {
      */
     public boolean isAllowScriptInComments() {
         return allowScriptInComments;
-    }
-
-    /**
-     * Return true if the tag is allowed for this specific version of HTML.
-     */
-    public boolean allowTag(HtmlTag htmlTag) {
-        return htmlTag.allowTag(this.htmlVersion);
     }
 }

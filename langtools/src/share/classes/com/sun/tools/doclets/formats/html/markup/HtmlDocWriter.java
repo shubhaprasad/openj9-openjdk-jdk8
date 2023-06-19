@@ -75,9 +75,6 @@ public abstract class HtmlDocWriter extends HtmlWriter {
      */
     public abstract Configuration configuration();
 
-    //Shubha
-    public ConfigurationImpl configurationimpl;
-
     public Content getHyperLink(DocPath link, String label) {
         return getHyperLink(link, new StringContent(label), false, "", "", "");
     }
@@ -341,7 +338,7 @@ public abstract class HtmlDocWriter extends HtmlWriter {
     }
 
     protected Content createTagIfAllowed(HtmlTag tag, Supplier<Content> ifSupported, Supplier<Content> ifNotSupported) {
-        if (configurationimpl.allowTag(tag)) {
+        if (configuration.allowTag(tag)) {
             return ifSupported.get();
         }
         else
