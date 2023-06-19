@@ -98,7 +98,7 @@ public enum HtmlTag {
     public final BlockType blockType;
     public final EndTag endTag;
     public final String value;
-   public final HtmlVersion htmlVersion;
+   public HtmlVersion htmlVersion;
 
 
     /**
