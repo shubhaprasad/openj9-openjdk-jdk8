@@ -25,7 +25,7 @@
 
 package com.sun.tools.doclets.formats.html.markup;
 
-import com.sun.tools.example.debug.bdi.Utils;
+import com.sun.tools.doclets.internal.toolkit.util.Util;
 import com.sun.tools.javac.util.StringUtils;
 
 /**
@@ -78,7 +78,7 @@ public enum HtmlAttr {
         private final String role;
 
         Role() {
-            role = Utils.toLowerCase(name());
+            role = Util.toLowerCase(name());
         }
 
         public String toString() {

@@ -33,7 +33,7 @@ import java.nio.charset.*;
 import com.sun.tools.doclets.internal.toolkit.Content;
 import com.sun.tools.doclets.internal.toolkit.util.*;
 
-import javax.management.relation.Role;
+import com.sun.tools.doclets.formats.html.markup.HtmlAttr.Role;
 
 /**
  * Class for generating HTML tree for javadoc output.
