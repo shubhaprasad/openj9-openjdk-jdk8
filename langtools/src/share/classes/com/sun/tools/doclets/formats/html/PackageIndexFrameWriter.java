@@ -79,7 +79,7 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
      * {@inheritDoc}
      */
     protected void addPackagesList(PackageDoc[] packages, String text,
-            String tableSummary, Content body) {
+            String tableSummary, Content main) {
         Content heading = HtmlTree.HEADING(HtmlConstants.PACKAGE_HEADING, true,
                 packagesLabel);
         Content div = HtmlTree.DIV(HtmlStyle.indexContainer, heading);
@@ -94,7 +94,7 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
             }
         }
         div.addContent(ul);
-        body.addContent(div);
+        main.addContent(div);
     }
 
     /**

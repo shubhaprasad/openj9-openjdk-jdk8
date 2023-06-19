@@ -108,14 +108,14 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
      *
      * @param body the documentation tree to which the index will be added
      */
-    protected void addIndex(Content body) {
+    protected void addIndex(Content main) {
         for (int i = 0; i < groupList.size(); i++) {
         String groupname = groupList.get(i);
         List<PackageDoc> list = groupPackageMap.get(groupname);
             if (list != null && list.size() > 0) {
                 addIndexContents(list.toArray(new PackageDoc[list.size()]),
                         groupname, configuration.getText("doclet.Member_Table_Summary",
-                        groupname, configuration.getText("doclet.packages")), body);
+                        groupname, configuration.getText("doclet.packages")), main);
             }
         }
     }
@@ -148,7 +148,7 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
      * {@inheritDoc}
      */
     protected void addPackagesList(PackageDoc[] packages, String text,
-            String tableSummary, Content body) {
+            String tableSummary, Content main) {
         Content table = HtmlTree.TABLE(HtmlStyle.overviewSummary, 0, 3, 0, tableSummary,
                 getTableCaption(new RawHtml(text)));
         table.addContent(getSummaryTableHeader(packageTableHeader, "col"));
@@ -156,7 +156,7 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
         addPackagesList(packages, tbody);
         table.addContent(tbody);
         Content div = HtmlTree.DIV(HtmlStyle.contentContainer, table);
-        body.addContent(div);
+        main.addContent(div);
     }
 
     /**
@@ -192,9 +192,9 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
      * summary at the top of the page and generate a link to the description,
      * which is added at the end of this page.
      *
-     * @param body the documentation tree to which the overview header will be added
+     * @param main the documentation tree to which the overview header will be added
      */
-    protected void addOverviewHeader(Content body) {
+    protected void addOverviewHeader(Content main) {
         if (root.inlineTags().length > 0) {
             HtmlTree subTitleDiv = new HtmlTree(HtmlTag.DIV);
             subTitleDiv.addStyle(HtmlStyle.subTitle);
@@ -208,7 +208,7 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
                     descriptionLabel, "", "");
             descPara.addContent(descLink);
             div.addContent(descPara);
-            body.addContent(div);
+            main.addContent(div);
         }
     }
 

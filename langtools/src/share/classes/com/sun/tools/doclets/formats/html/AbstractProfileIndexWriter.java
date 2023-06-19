@@ -160,13 +160,13 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
     /**
      * Adds the frame or non-frame profile index to the documentation tree.
      *
-     * @param body the document tree to which the index will be added
+     * @param main the document tree to which the index will be added
      */
-    protected void addIndex(Content body) {
+    protected void addIndex(Content main) {
         addIndexContents(profiles, "doclet.Profile_Summary",
                 configuration.getText("doclet.Member_Table_Summary",
                 configuration.getText("doclet.Profile_Summary"),
-                configuration.getText("doclet.profiles")), body);
+                configuration.getText("doclet.profiles")), main);
     }
 
     /**
@@ -189,17 +189,17 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param profiles profiles to be documented
      * @param text string which will be used as the heading
      * @param tableSummary summary for the table
-     * @param body the document tree to which the index contents will be added
+     * @param main the document tree to which the index contents will be added
      */
     protected void addIndexContents(Profiles profiles, String text,
-            String tableSummary, Content body) {
+            String tableSummary, Content main) {
         if (profiles.getProfileCount() > 0) {
             HtmlTree div = new HtmlTree(HtmlTag.DIV);
             div.addStyle(HtmlStyle.indexHeader);
             addAllClassesLink(div);
             addAllPackagesLink(div);
-            body.addContent(div);
-            addProfilesList(profiles, text, tableSummary, body);
+            main.addContent(div);
+            addProfilesList(profiles, text, tableSummary, main);
         }
     }
 
