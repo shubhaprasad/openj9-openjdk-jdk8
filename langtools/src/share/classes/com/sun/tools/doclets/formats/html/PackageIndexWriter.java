@@ -105,17 +105,17 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
     /**
      * Depending upon the grouping information and their titles, add
      * separate table indices for each package group.
-     *
-     * @param body the documentation tree to which the index will be added
+     * @param header the document tree to which the navigational links will be added
+     * @param main the documentation tree to which the index will be added
      */
-    protected void addIndex(Content main) {
+    protected void addIndex(Content header,Content main) {
         for (int i = 0; i < groupList.size(); i++) {
         String groupname = groupList.get(i);
         List<PackageDoc> list = groupPackageMap.get(groupname);
             if (list != null && list.size() > 0) {
                 addIndexContents(list.toArray(new PackageDoc[list.size()]),
                         groupname, configuration.getText("doclet.Member_Table_Summary",
-                        groupname, configuration.getText("doclet.packages")), main);
+                        groupname, configuration.getText("doclet.packages")), header,main);
             }
         }
     }

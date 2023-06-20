@@ -113,10 +113,12 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
     protected void buildPackageIndexFile(String title, boolean includeScript) throws IOException {
         String windowOverview = configuration.getText(title);
         Content body = getBody(includeScript, getWindowTitle(windowOverview));
+        Content header = createTagIfAllowed(HtmlTag.HEADER,HtmlTree::HEADER,ContentBuilder::new);
+        addNavigationBarHeader(header);
         Content main = createTagIfAllowed(HtmlTag.MAIN, HtmlTree::MAIN, ContentBuilder::new);
         addNavigationBarHeader(main);
         addOverviewHeader(main);
-        addIndex(body);
+        addIndex(header,main);
         addOverview(main);
         addNavigationBarFooter(body);
         printHtmlDocument(configuration.metakeywords.getOverviewMetaKeywords(title,
@@ -126,21 +128,21 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
     /**
      * Default to no overview, override to add overview.
      *
-     * @param body the document tree to which the overview will be added
+     * @param main the document tree to which the overview will be added
      */
-    protected void addOverview(Content body) throws IOException {
+    protected void addOverview(Content main) throws IOException {
     }
 
     /**
      * Adds the frame or non-frame package index to the documentation tree.
-     *
-     * @param body the document tree to which the index will be added
+     * @param header the document tree to which the navigational links will be added
+     * @param main the document tree to which the index will be added
      */
-    protected void addIndex(Content body) {
+    protected void addIndex(Content header,Content main) {
         addIndexContents(packages, "doclet.Package_Summary",
                 configuration.getText("doclet.Member_Table_Summary",
                 configuration.getText("doclet.Package_Summary"),
-                configuration.getText("doclet.packages")), body);
+                configuration.getText("doclet.packages")), header,main);
     }
 
     /**
@@ -150,10 +152,11 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
      * @param packages array of packages to be documented
      * @param text string which will be used as the heading
      * @param tableSummary summary for the table
-     * @param body the document tree to which the index contents will be added
+     * @param header the document tree to which the navigational links will be added
+     * @param main the document tree to which the index contents will be added
      */
     protected void addIndexContents(PackageDoc[] packages, String text,
-            String tableSummary, Content body) {
+            String tableSummary, Content header,Content main) {
         if (packages.length > 0) {
             Arrays.sort(packages);
             HtmlTree div = new HtmlTree(HtmlTag.DIV);
@@ -162,12 +165,12 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
             if (configuration.showProfiles) {
                 addAllProfilesLink(div);
             }
-            body.addContent(div);
+            header.addContent(div);
             if (configuration.showProfiles && configuration.profilePackages.size() > 0) {
                 Content profileSummary = configuration.getResource("doclet.Profiles");
-                addProfilesList(profileSummary, body);
+                addProfilesList(profileSummary, main);
             }
-            addPackagesList(packages, text, tableSummary, body);
+            addPackagesList(packages, text, tableSummary, main);
         }
     }
 

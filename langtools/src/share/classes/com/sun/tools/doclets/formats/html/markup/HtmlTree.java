@@ -99,6 +99,17 @@ public class HtmlTree extends Content {
     }
 
     /**
+     * Sets the style for the HTML tag.
+     *
+     * @param style style to be added
+     * @return this object
+     */
+    public HtmlTree setStyle(HtmlStyle style) {
+        addAttr(HtmlAttr.CLASS, style.toString());
+        return this;
+    }
+
+    /**
      * Adds content for the HTML tag.
      *
      * @param tagContent tag content to be added
@@ -457,6 +468,28 @@ public class HtmlTree extends Content {
      * @param body body for the HTML tag
      * @return an HtmlTree object for the HTML tag
      */
+
+    /**
+     * Generates a FOOTER tag with role attribute.
+     *
+     * @return an HtmlTree object for the FOOTER tag
+     */
+    public static HtmlTree FOOTER() {
+        HtmlTree htmltree = new HtmlTree(HtmlTag.FOOTER);
+        htmltree.setRole(Role.CONTENTINFO);
+        return htmltree;
+    }
+
+    /**
+     * Generates a HEADER tag with role attribute.
+     *
+     * @return an HtmlTree object for the HEADER tag
+     */
+    public static HtmlTree HEADER() {
+        HtmlTree htmltree = new HtmlTree(HtmlTag.HEADER);
+        htmltree.setRole(Role.BANNER);
+        return htmltree;
+    }
     public static HtmlTree HTML(String lang, Content head, Content body) {
         HtmlTree htmltree = new HtmlTree(HtmlTag.HTML, nullCheck(head), nullCheck(body));
         htmltree.addAttr(HtmlAttr.LANG, nullCheck(lang));
@@ -627,6 +660,33 @@ public class HtmlTree extends Content {
     public static HtmlTree MAIN() {
         HtmlTree htmltree = new HtmlTree(HtmlTag.MAIN);
         htmltree.setRole(Role.MAIN);
+        return htmltree;
+    }
+
+    /**
+     * Generates a MAIN tag with role attribute and some content.
+     *
+     * @param body content of the MAIN tag
+     * @return an HtmlTree object for the MAIN tag
+     */
+    public static HtmlTree MAIN(Content body) {
+        HtmlTree htmltree = new HtmlTree(HtmlTag.MAIN, nullCheck(body));
+        htmltree.setRole(Role.MAIN);
+        return htmltree;
+    }
+
+    /**
+     * Generates a MAIN tag with role attribute, style attribute and some content.
+     *
+     * @param styleClass style of the MAIN tag
+     * @param body content of the MAIN tag
+     * @return an HtmlTree object for the MAIN tag
+     */
+    public static HtmlTree MAIN(HtmlStyle styleClass, Content body) {
+        HtmlTree htmltree = HtmlTree.MAIN(body);
+        if (styleClass != null) {
+            htmltree.setStyle(styleClass);
+        }
         return htmltree;
     }
     /**
