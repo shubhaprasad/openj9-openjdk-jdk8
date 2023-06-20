@@ -82,7 +82,7 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
             String tableSummary, Content main) {
         Content heading = HtmlTree.HEADING(HtmlConstants.PACKAGE_HEADING, true,
                 packagesLabel);
-        Content div = HtmlTree.DIV(HtmlStyle.indexContainer, heading);
+        HtmlTree htmlTree = HtmlTree.DIV(HtmlStyle.indexContainer, heading);
         HtmlTree ul = new HtmlTree(HtmlTag.UL);
         ul.setTitle(packagesLabel);
         for(int i = 0; i < packages.length; i++) {
@@ -93,8 +93,8 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
                 ul.addContent(getPackage(packages[i]));
             }
         }
-        div.addContent(ul);
-        main.addContent(div);
+        htmlTree.addContent(ul);
+        main.addContent(htmlTree);
     }
 
     /**
@@ -123,7 +123,7 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
     /**
      * {@inheritDoc}
      */
-    protected void addNavigationBarHeader(Content body) {
+    protected void addNavigationBarHeader(Content header) {
         Content headerContent;
         if (configuration.packagesheader.length() > 0) {
             headerContent = new RawHtml(replaceDocRootDir(configuration.packagesheader));
@@ -132,7 +132,7 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
         }
         Content heading = HtmlTree.HEADING(HtmlConstants.TITLE_HEADING, true,
                 HtmlStyle.bar, headerContent);
-        body.addContent(heading);
+        header.addContent(heading);
     }
 
     /**
@@ -170,8 +170,8 @@ public class PackageIndexFrameWriter extends AbstractPackageIndexWriter {
     /**
      * {@inheritDoc}
      */
-    protected void addNavigationBarFooter(Content body) {
+    protected void addNavigationBarFooter(Content footer) {
         Content p = HtmlTree.P(getSpace());
-        body.addContent(p);
+        footer.addContent(p);
     }
 }

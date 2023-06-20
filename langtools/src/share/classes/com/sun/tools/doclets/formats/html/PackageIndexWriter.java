@@ -248,20 +248,20 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
      *
      * @body the documentation tree to which the navigation bar header will be added
      */
-    protected void addNavigationBarHeader(Content body) {
-        addTop(body);
-        addNavLinks(true, body);
-        addConfigurationTitle(body);
+    protected void addNavigationBarHeader(Content header) {
+        addTop(header);
+        addNavLinks(true, header);
+        addConfigurationTitle(header);
     }
 
     /**
      * Adds the lower navigation bar and the bottom text
      * (from the -bottom option) at the bottom of page.
      *
-     * @param body the documentation tree to which the navigation bar footer will be added
+     * @param footer the documentation tree to which the navigation bar footer will be added
      */
-    protected void addNavigationBarFooter(Content body) {
-        addNavLinks(false, body);
-        addBottom(body);
+    protected void addNavigationBarFooter(Content footer) {
+        addNavLinks(false, footer);
+        addBottom(footer);
     }
 }
