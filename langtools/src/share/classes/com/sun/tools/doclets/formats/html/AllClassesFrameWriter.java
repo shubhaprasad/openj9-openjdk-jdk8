@@ -112,16 +112,17 @@ public class AllClassesFrameWriter extends HtmlDocletWriter {
      */
     protected void buildAllClassesFile(boolean wantFrames) throws IOException {
         String label = configuration.getText("doclet.All_Classes");
-        Content body = getBody(false, getWindowTitle(label));
+        //Content body = getBody(false, getWindowTitle(label));
+        Content main = createTagIfAllowed(HtmlTag.MAIN, HtmlTree::MAIN, ContentBuilder::new);
         Content heading = HtmlTree.HEADING(HtmlConstants.TITLE_HEADING,
                 HtmlStyle.bar, allclassesLabel);
-        body.addContent(heading);
+        main.addContent(heading);
         Content ul = new HtmlTree(HtmlTag.UL);
         // Generate the class links and add it to the tdFont tree.
         addAllClasses(ul, wantFrames);
         Content div = HtmlTree.DIV(HtmlStyle.indexContainer, ul);
-        body.addContent(div);
-        printHtmlDocument(null, false, body);
+        main.addContent(div);
+        printHtmlDocument(null, false, main);
     }
 
     /**
