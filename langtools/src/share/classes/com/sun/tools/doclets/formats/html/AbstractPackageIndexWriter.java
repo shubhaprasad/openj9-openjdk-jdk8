@@ -120,7 +120,11 @@ public abstract class AbstractPackageIndexWriter extends HtmlDocletWriter {
         addOverviewHeader(main);
         addIndex(header,main);
         addOverview(main);
-        addNavigationBarFooter(body);
+        Content footer = createTagIfAllowed(HtmlTag.FOOTER, HtmlTree::FOOTER, ContentBuilder::new);
+        addNavigationBarFooter(footer);
+        body.addContent(header);
+        body.addContent(main);
+        body.addContent(footer);
         printHtmlDocument(configuration.metakeywords.getOverviewMetaKeywords(title,
                 configuration.doctitle), includeScript, body);
     }
