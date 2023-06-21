@@ -93,15 +93,18 @@ public class PackageFrameWriter extends HtmlDocletWriter {
         try {
             packgen = new PackageFrameWriter(configuration, packageDoc);
             String pkgName = Util.getPackageName(packageDoc);
-            Content body = packgen.getBody(false, packgen.getWindowTitle(pkgName));
+            HtmlTree body = packgen.getBody(false, packgen.getWindowTitle(pkgName));
             Content pkgNameContent = new StringContent(pkgName);
+            HtmlTree htmlTree = (configuration.allowTag(HtmlTag.MAIN))
+                    ? HtmlTree.MAIN()
+                    : body;
             Content heading = HtmlTree.HEADING(HtmlConstants.TITLE_HEADING, HtmlStyle.bar,
                     packgen.getTargetPackageLink(packageDoc, "classFrame", pkgNameContent));
-            body.addContent(heading);
+            htmlTree.addContent(heading);
             HtmlTree div = new HtmlTree(HtmlTag.DIV);
-            div.addStyle(HtmlStyle.indexContainer);
+            div.setStyle(HtmlStyle.indexContainer);
             packgen.addClassListing(div);
-            body.addContent(div);
+            htmlTree.addContent(div);
             packgen.printHtmlDocument(
                     configuration.metakeywords.getMetaKeywords(packageDoc), false, body);
             packgen.close();

@@ -80,9 +80,9 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
     /**
      * Adds the overview header to the documentation tree.
      *
-     * @param header the document tree to which the overview header will be added
+     * @param main the document tree to which the overview header will be added
      */
-    protected abstract void addOverviewHeader(Content header);
+    protected abstract void addOverviewHeader(Content main);
 
     /**
      * Adds the profiles list to the documentation tree.
@@ -93,7 +93,7 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param body the document tree to which the profiles list will be added
      */
     protected abstract void addProfilesList(Profiles profiles, String text,
-            String tableSummary, Content body);
+            String tableSummary, Content main);
 
     /**
      * Adds the profile packages list to the documentation tree.
@@ -118,11 +118,17 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
     protected void buildProfileIndexFile(String title, boolean includeScript) throws IOException {
         String windowOverview = configuration.getText(title);
         Content body = getBody(includeScript, getWindowTitle(windowOverview));
-        addNavigationBarHeader(body);
-        addOverviewHeader(body);
-        addIndex(body);
-        addOverview(body);
-        addNavigationBarFooter(body);
+        Content header = createTagIfAllowed(HtmlTag.HEADER, HtmlTree::HEADER, ContentBuilder::new);
+        addNavigationBarHeader(header);
+        Content main = createTagIfAllowed(HtmlTag.MAIN, HtmlTree::MAIN, ContentBuilder::new);
+        addOverviewHeader(main);
+        addIndex(header, main);
+        addOverview(main);
+        Content footer = createTagIfAllowed(HtmlTag.FOOTER, HtmlTree::FOOTER, ContentBuilder::new);
+        addNavigationBarFooter(footer);
+        body.addContent(header);
+        body.addContent(main);
+        body.addContent(footer);
         printHtmlDocument(configuration.metakeywords.getOverviewMetaKeywords(title,
                 configuration.doctitle), includeScript, body);
     }
@@ -140,11 +146,17 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
             boolean includeScript, String profileName) throws IOException {
         String windowOverview = configuration.getText(title);
         Content body = getBody(includeScript, getWindowTitle(windowOverview));
-        addNavigationBarHeader(body);
-        addOverviewHeader(body);
-        addProfilePackagesIndex(body, profileName);
-        addOverview(body);
-        addNavigationBarFooter(body);
+        Content header = createTagIfAllowed(HtmlTag.HEADER, HtmlTree::HEADER, ContentBuilder::new);
+        addNavigationBarHeader(header);
+        Content main = createTagIfAllowed(HtmlTag.MAIN, HtmlTree::MAIN, ContentBuilder::new);
+        addOverviewHeader(main);
+        addProfilePackagesIndex(header, main, profileName);
+        addOverview(main);
+        Content footer = createTagIfAllowed(HtmlTag.FOOTER, HtmlTree::FOOTER, ContentBuilder::new);
+        addNavigationBarFooter(footer);
+        body.addContent(header);
+        body.addContent(main);
+        body.addContent(footer);
         printHtmlDocument(configuration.metakeywords.getOverviewMetaKeywords(title,
                 configuration.doctitle), includeScript, body);
     }
@@ -162,11 +174,11 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      *
      * @param main the document tree to which the index will be added
      */
-    protected void addIndex(Content main) {
+    protected void addIndex(Content header, Content main) {
         addIndexContents(profiles, "doclet.Profile_Summary",
                 configuration.getText("doclet.Member_Table_Summary",
                 configuration.getText("doclet.Profile_Summary"),
-                configuration.getText("doclet.profiles")), main);
+                configuration.getText("doclet.profiles")), header,main);
     }
 
     /**
@@ -175,11 +187,11 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param body the document tree to which the index will be added
      * @param profileName  the name of the profile being documented
      */
-    protected void addProfilePackagesIndex(Content body, String profileName) {
+    protected void addProfilePackagesIndex(Content body,Content main, String profileName) {
         addProfilePackagesIndexContents(profiles, "doclet.Profile_Summary",
                 configuration.getText("doclet.Member_Table_Summary",
                 configuration.getText("doclet.Profile_Summary"),
-                configuration.getText("doclet.profiles")), body, profileName);
+                configuration.getText("doclet.profiles")), body, main, profileName);
     }
 
     /**
@@ -192,7 +204,7 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param main the document tree to which the index contents will be added
      */
     protected void addIndexContents(Profiles profiles, String text,
-            String tableSummary, Content main) {
+            String tableSummary, Content header,Content main) {
         if (profiles.getProfileCount() > 0) {
             HtmlTree div = new HtmlTree(HtmlTag.DIV);
             div.addStyle(HtmlStyle.indexHeader);
@@ -214,7 +226,7 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param profileName the name of the profile being documented
      */
     protected void addProfilePackagesIndexContents(Profiles profiles, String text,
-            String tableSummary, Content body, String profileName) {
+            String tableSummary, Content body, Content main, String profileName) {
         HtmlTree div = new HtmlTree(HtmlTag.DIV);
         div.addStyle(HtmlStyle.indexHeader);
         addAllClassesLink(div);

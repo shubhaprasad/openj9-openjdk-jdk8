@@ -160,7 +160,10 @@ public class ClassWriterImpl extends SubWriterHolderWriter
         String pkgname = (classDoc.containingPackage() != null)?
             classDoc.containingPackage().name(): "";
         String clname = classDoc.name();
-        Content bodyTree = getBody(true, getWindowTitle(clname));
+        HtmlTree bodyTree = getBody(true, getWindowTitle(clname));
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.HEADER))
+                ? HtmlTree.HEADER()
+                : bodyTree;
         addTop(bodyTree);
         addNavLinks(true, bodyTree);
         bodyTree.addContent(HtmlConstants.START_OF_CLASS_DATA);
