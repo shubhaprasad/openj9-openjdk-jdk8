@@ -67,6 +67,7 @@ public enum HtmlStyle {
     indexHeader,
     inheritance,
     interfaceName,
+    indexNav,
     legalCopy,
     memberNameLabel,
     memberNameLink,

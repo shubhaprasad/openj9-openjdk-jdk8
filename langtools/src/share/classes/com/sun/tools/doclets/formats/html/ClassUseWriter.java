@@ -91,6 +91,10 @@ public class ClassUseWriter extends SubWriterHolderWriter {
     final String constructorUseTableSummary;
 
     /**
+     * The HTML tree for main tag.
+     */
+    protected HtmlTree mainTree = HtmlTree.MAIN();
+    /**
      * Constructor.
      *
      * @param filename the file to be generated.
@@ -226,7 +230,7 @@ public class ClassUseWriter extends SubWriterHolderWriter {
      * Generate the class use list.
      */
     protected void generateClassUseFile() throws IOException {
-        Content body = getClassUseHeader();
+        HtmlTree body = getClassUseHeader();
         HtmlTree div = new HtmlTree(HtmlTag.DIV);
         div.addStyle(HtmlStyle.classUseContainer);
         if (pkgSet.size() > 0) {
@@ -448,15 +452,21 @@ public class ClassUseWriter extends SubWriterHolderWriter {
      *
      * @return a content tree representing the class use header
      */
-    protected Content getClassUseHeader() {
+    protected HtmlTree getClassUseHeader() {
         String cltype = configuration.getText(classdoc.isInterface()?
             "doclet.Interface":"doclet.Class");
         String clname = classdoc.qualifiedName();
         String title = configuration.getText("doclet.Window_ClassUse_Header",
                 cltype, clname);
-        Content bodyTree = getBody(true, getWindowTitle(title));
-        addTop(bodyTree);
+        HtmlTree bodyTree = getBody(true, getWindowTitle(title));
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.HEADER))
+                ? HtmlTree.HEADER()
+                : bodyTree;
+        addTop(htmlTree);
         addNavLinks(true, bodyTree);
+        if (configuration.allowTag(HtmlTag.HEADER)) {
+            bodyTree.addContent(htmlTree);
+        }
         ContentBuilder headContent = new ContentBuilder();
         headContent.addContent(getResource("doclet.ClassUse_Title", cltype));
         headContent.addContent(new HtmlTree(HtmlTag.BR));
@@ -464,6 +474,11 @@ public class ClassUseWriter extends SubWriterHolderWriter {
         Content heading = HtmlTree.HEADING(HtmlConstants.CLASS_PAGE_HEADING,
                 true, HtmlStyle.title, headContent);
         Content div = HtmlTree.DIV(HtmlStyle.header, heading);
+        if (configuration.allowTag(HtmlTag.MAIN)) {
+            mainTree.addContent(div);
+        } else {
+            bodyTree.addContent(div);
+        }
         bodyTree.addContent(div);
         return bodyTree;
     }

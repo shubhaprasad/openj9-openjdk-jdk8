@@ -569,6 +569,16 @@ public class HtmlTree extends Content {
     }
 
     /**
+     * Generates a NAV tag with the role attribute.
+     *
+     * @return an HtmlTree object for the NAV tag
+     */
+    public static HtmlTree NAV() {
+        HtmlTree htmltree = new HtmlTree(HtmlTag.NAV);
+        htmltree.setRole(Role.NAVIGATION);
+        return htmltree;
+    }
+    /**
      * Generates a NOSCRIPT tag with some content.
      *
      * @param body content of the noscript tag

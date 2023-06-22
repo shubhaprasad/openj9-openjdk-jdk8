@@ -164,9 +164,9 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
     /**
      * Default to no overview, override to add overview.
      *
-     * @param body the document tree to which the overview will be added
+     * @param main the document tree to which the overview will be added
      */
-    protected void addOverview(Content body) throws IOException {
+    protected void addOverview(Content main) throws IOException {
     }
 
     /**
@@ -187,11 +187,11 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
      * @param body the document tree to which the index will be added
      * @param profileName  the name of the profile being documented
      */
-    protected void addProfilePackagesIndex(Content body,Content main, String profileName) {
+    protected void addProfilePackagesIndex(Content header,Content main, String profileName) {
         addProfilePackagesIndexContents(profiles, "doclet.Profile_Summary",
                 configuration.getText("doclet.Member_Table_Summary",
                 configuration.getText("doclet.Profile_Summary"),
-                configuration.getText("doclet.profiles")), body, main, profileName);
+                configuration.getText("doclet.profiles")), header, main, profileName);
     }
 
     /**
@@ -217,23 +217,25 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
 
     /**
      * Adds profile packages index contents. Call appropriate methods from
-     * the sub-classes. Adds it to the body HtmlTree
+     * the sub-classes. Adds it to the main HtmlTree
      *
      * @param profiles profiles to be documented
      * @param text string which will be used as the heading
      * @param tableSummary summary for the table
-     * @param body the document tree to which the index contents will be added
+     * @param header the document tree to which the index contents will be added
      * @param profileName the name of the profile being documented
      */
     protected void addProfilePackagesIndexContents(Profiles profiles, String text,
-            String tableSummary, Content body, Content main, String profileName) {
-        HtmlTree div = new HtmlTree(HtmlTag.DIV);
-        div.addStyle(HtmlStyle.indexHeader);
-        addAllClassesLink(div);
-        addAllPackagesLink(div);
-        addAllProfilesLink(div);
-        body.addContent(div);
-        addProfilePackagesList(profiles, text, tableSummary, body, profileName);
+            String tableSummary, Content header, Content main, String profileName) {
+        HtmlTree htmlTree = (HtmlTree)createTagIfAllowed(HtmlTag.NAV, HtmlTree::NAV, () -> new HtmlTree(HtmlTag.DIV));
+        htmlTree.setStyle(HtmlStyle.indexNav);
+        HtmlTree ul = new HtmlTree(HtmlTag.UL);
+        addAllClassesLink(ul);
+        addAllPackagesLink(ul);
+        addAllProfilesLink(ul);
+        htmlTree.addContent(ul);
+        header.addContent(htmlTree);
+        addProfilePackagesList(profiles, text, tableSummary, main, profileName);
     }
 
     /**
