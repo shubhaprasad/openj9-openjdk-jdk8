@@ -65,6 +65,10 @@ public class ClassWriterImpl extends SubWriterHolderWriter
     protected final ClassDoc prev;
 
     protected final ClassDoc next;
+    /**
+     * The HTML tree for main tag.
+     */
+    protected HtmlTree mainTree = HtmlTree.MAIN()
 
     /**
      * @param configuration the configuration data for the doclet
@@ -164,7 +168,7 @@ public class ClassWriterImpl extends SubWriterHolderWriter
         HtmlTree htmlTree = (configuration.allowTag(HtmlTag.HEADER))
                 ? HtmlTree.HEADER()
                 : bodyTree;
-        addTop(bodyTree);
+        addTop(htmlTree);
         addNavLinks(true, bodyTree);
         bodyTree.addContent(HtmlConstants.START_OF_CLASS_DATA);
         HtmlTree div = new HtmlTree(HtmlTag.DIV);
@@ -197,6 +201,9 @@ public class ClassWriterImpl extends SubWriterHolderWriter
                 HtmlStyle.title, headerContent);
         heading.addContent(getTypeParameterLinks(linkInfo));
         div.addContent(heading);
+        if (configuration.allowTag(HtmlTag.MAIN)) {
+            mainTree.addContent(div);
+        }
         bodyTree.addContent(div);
         return bodyTree;
     }

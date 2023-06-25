@@ -56,6 +56,10 @@ public class AbstractIndexWriter extends HtmlDocletWriter {
     protected IndexBuilder indexbuilder;
 
     /**
+     * The HTML tree for main tag.
+     */
+    protected HtmlTree mainTree = HtmlTree.MAIN();
+    /**
      * This constructor will be used by {@link SplitIndexWriter}. Initializes
      * path to this file and relative path from this file.
      *

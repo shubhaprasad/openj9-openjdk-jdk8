@@ -89,8 +89,11 @@ public class SingleIndexWriter extends AbstractIndexWriter {
      */
     protected void generateIndexFile() throws IOException {
         String title = configuration.getText("doclet.Window_Single_Index");
-        Content body = getBody(true, getWindowTitle(title));
-        addTop(body);
+        HtmlTree body = getBody(true, getWindowTitle(title));
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.HEADER))
+                ? HtmlTree.HEADER()
+                : body;
+        addTop(htmlTree);
         addNavLinks(true, body);
         HtmlTree divTree = new HtmlTree(HtmlTag.DIV);
         divTree.addStyle(HtmlStyle.contentContainer);
@@ -100,7 +103,16 @@ public class SingleIndexWriter extends AbstractIndexWriter {
             addContents(unicode, indexbuilder.getMemberList(unicode), divTree);
         }
         addLinksForIndexes(divTree);
-        body.addContent(divTree);
+        body.addContent((configuration.allowTag(HtmlTag.MAIN))
+                ? HtmlTree.MAIN(divTree)
+                : divTree);
+        if (configuration.allowTag(HtmlTag.FOOTER)) {
+            htmlTree = HtmlTree.FOOTER();
+        }
+        addBottom(htmlTree);
+        if (configuration.allowTag(HtmlTag.FOOTER)) {
+            body.addContent(htmlTree);
+        }
         addNavLinks(false, body);
         addBottom(body);
         printHtmlDocument(null, true, body);

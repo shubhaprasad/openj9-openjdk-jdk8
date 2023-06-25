@@ -239,9 +239,20 @@ public class ClassUseWriter extends SubWriterHolderWriter {
             div.addContent(getResource("doclet.ClassUse_No.usage.of.0",
                     classdoc.qualifiedName()));
         }
-        body.addContent(div);
+        if (configuration.allowTag(HtmlTag.MAIN)) {
+            mainTree.addContent(div);
+            body.addContent(mainTree);
+        } else {
+            body.addContent(div);
+        }
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.FOOTER))
+                ? HtmlTree.FOOTER()
+                : body;
         addNavLinks(false, body);
-        addBottom(body);
+        addBottom(htmlTree);
+        if (configuration.allowTag(HtmlTag.FOOTER)) {
+            body.addContent(htmlTree);
+        }
         printHtmlDocument(null, true, body);
     }
 
