@@ -68,7 +68,7 @@ public class ClassWriterImpl extends SubWriterHolderWriter
     /**
      * The HTML tree for main tag.
      */
-    protected HtmlTree mainTree = HtmlTree.MAIN()
+    protected HtmlTree mainTree = HtmlTree.MAIN();
 
     /**
      * @param configuration the configuration data for the doclet
