@@ -105,6 +105,9 @@ public class PackageFrameWriter extends HtmlDocletWriter {
             div.setStyle(HtmlStyle.indexContainer);
             packgen.addClassListing(div);
             htmlTree.addContent(div);
+            if (configuration.allowTag(HtmlTag.MAIN)) {
+                body.addContent(htmlTree);
+            }
             packgen.printHtmlDocument(
                     configuration.metakeywords.getMetaKeywords(packageDoc), false, body);
             packgen.close();

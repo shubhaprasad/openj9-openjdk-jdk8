@@ -89,7 +89,9 @@ public class ProfilePackageIndexFrameWriter extends AbstractProfileIndexWriter {
                 getTargetProfileLink("classFrame", profNameContent, profileName));
         heading.addContent(getSpace());
         heading.addContent(packagesLabel);
-        Content div = HtmlTree.DIV(HtmlStyle.indexContainer, heading);
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.MAIN))
+                ? HtmlTree.MAIN(HtmlStyle.indexContainer, heading)
+                : HtmlTree.DIV(HtmlStyle.indexContainer, heading);
         HtmlTree ul = new HtmlTree(HtmlTag.UL);
         ul.setTitle(packagesLabel);
         PackageDoc[] packages = configuration.profilePackages.get(profileName);
@@ -98,8 +100,8 @@ public class ProfilePackageIndexFrameWriter extends AbstractProfileIndexWriter {
                 ul.addContent(getPackage(packages[i], profileName));
             }
         }
-        div.addContent(ul);
-        body.addContent(div);
+        htmlTree.addContent(ul);
+        body.addContent(htmlTree);
     }
 
     /**

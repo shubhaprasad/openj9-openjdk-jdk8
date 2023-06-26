@@ -50,7 +50,6 @@ public class PackageTreeWriter extends AbstractTreeWriter {
      * Package for which tree is to be generated.
      */
     protected PackageDoc packagedoc;
-
     /**
      * The previous package name in the alpha-order list.
      */
@@ -125,7 +124,7 @@ public class PackageTreeWriter extends AbstractTreeWriter {
         if (configuration.packages.length > 1) {
             addLinkToMainTree(div);
         }
-        body.addContent(div);
+        htmlTree.addContent(div);
         HtmlTree divTree = new HtmlTree(HtmlTag.DIV);
         divTree.addStyle(HtmlStyle.contentContainer);
         addTree(classtree.baseclasses(), "doclet.Class_Hierarchy", divTree);
@@ -139,7 +138,6 @@ public class PackageTreeWriter extends AbstractTreeWriter {
         HtmlTree tree = (configuration.allowTag(HtmlTag.FOOTER))
                 ? HtmlTree.FOOTER()
                 : body;
-        addNavLinks(false, body);
         addBottom(tree);
         if (configuration.allowTag(HtmlTag.FOOTER)) {
             body.addContent(tree);
@@ -156,8 +154,11 @@ public class PackageTreeWriter extends AbstractTreeWriter {
         String title = packagedoc.name() + " " +
                 configuration.getText("doclet.Window_Class_Hierarchy");
         HtmlTree bodyTree = getBody(true, getWindowTitle(title));
-        addTop(bodyTree);
-        addNavLinks(true, bodyTree);
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.HEADER))
+                ? HtmlTree.HEADER()
+                : bodyTree;
+        addTop(htmlTree);
+        addNavLinks(true, htmlTree);
         return bodyTree;
     }
 
