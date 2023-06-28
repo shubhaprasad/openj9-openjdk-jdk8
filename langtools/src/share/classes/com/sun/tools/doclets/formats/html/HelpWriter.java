@@ -44,6 +44,7 @@ import com.sun.tools.doclets.internal.toolkit.util.*;
  */
 public class HelpWriter extends HtmlDocletWriter {
 
+    HtmlTree mainTree = HtmlTree.MAIN();
     /**
      * Constructor to construct HelpWriter object.
      * @param filename File to be generated.
@@ -105,7 +106,11 @@ public class HelpWriter extends HtmlDocletWriter {
         Content line2 = HtmlTree.DIV(HtmlStyle.subTitle,
                 getResource("doclet.Help_line_2"));
         div.addContent(line2);
-        contentTree.addContent(div);
+        if (configuration.allowTag(HtmlTag.MAIN)) {
+            mainTree.addContent(div);
+        } else {
+            contentTree.addContent(div);
+        }
         HtmlTree ul = new HtmlTree(HtmlTag.UL);
         ul.addStyle(HtmlStyle.blockList);
         if (configuration.createoverview) {

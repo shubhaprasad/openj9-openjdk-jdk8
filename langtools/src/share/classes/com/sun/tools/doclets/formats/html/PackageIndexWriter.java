@@ -195,9 +195,10 @@ public class PackageIndexWriter extends AbstractPackageIndexWriter {
      * @param main the documentation tree to which the overview header will be added
      */
     protected void addOverviewHeader(Content main) {
+        addConfigurationTitle(main);
         if (root.inlineTags().length > 0) {
             HtmlTree subTitleDiv = new HtmlTree(HtmlTag.DIV);
-            subTitleDiv.addStyle(HtmlStyle.subTitle);
+            subTitleDiv.addStyle(HtmlStyle.contentContainer);
             addSummaryComment(root, subTitleDiv);
             Content div = HtmlTree.DIV(HtmlStyle.header, subTitleDiv);
             Content see = seeLabel;

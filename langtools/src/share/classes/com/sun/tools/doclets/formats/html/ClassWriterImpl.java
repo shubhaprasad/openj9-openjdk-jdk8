@@ -204,7 +204,9 @@ public class ClassWriterImpl extends SubWriterHolderWriter
         if (configuration.allowTag(HtmlTag.MAIN)) {
             mainTree.addContent(div);
         }
-        bodyTree.addContent(div);
+        else {
+            bodyTree.addContent(div);
+        }
         return bodyTree;
     }
 

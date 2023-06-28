@@ -126,7 +126,7 @@ public class PackageFrameWriter extends HtmlDocletWriter {
      *
      * @param contentTree the content tree to which the listing will be added
      */
-    protected void addClassListing(Content contentTree) {
+    protected void addClassListing(HtmlTree contentTree) {
         Configuration config = configuration;
         if (packageDoc.isIncluded()) {
             addClassKindListing(packageDoc.interfaces(),
@@ -166,11 +166,15 @@ public class PackageFrameWriter extends HtmlDocletWriter {
      * @param contentTree the content tree to which the class kind listing will be added
      */
     protected void addClassKindListing(ClassDoc[] arr, Content labelContent,
-            Content contentTree) {
+            HtmlTree contentTree) {
         arr = Util.filterOutPrivateClasses(arr, configuration.javafx);
         if(arr.length > 0) {
             Arrays.sort(arr);
             boolean printedHeader = false;
+            HtmlTree htmlTree = (configuration.allowTag(HtmlTag.SECTION))
+                    ? HtmlTree.SECTION()
+                    : contentTree;
+
             HtmlTree ul = new HtmlTree(HtmlTag.UL);
             ul.setTitle(labelContent);
             for (int i = 0; i < arr.length; i++) {
@@ -185,7 +189,7 @@ public class PackageFrameWriter extends HtmlDocletWriter {
                 if (!printedHeader) {
                     Content heading = HtmlTree.HEADING(HtmlConstants.CONTENT_HEADING,
                             true, labelContent);
-                    contentTree.addContent(heading);
+                    htmlTree.addContent(heading);
                     printedHeader = true;
                 }
                 Content arr_i_name = new StringContent(arr[i].name());
@@ -195,7 +199,11 @@ public class PackageFrameWriter extends HtmlDocletWriter {
                 Content li = HtmlTree.LI(link);
                 ul.addContent(li);
             }
-            contentTree.addContent(ul);
+            htmlTree.addContent(ul);
+            if (configuration.allowTag(HtmlTag.SECTION)) {
+                contentTree.addContent(htmlTree);
+            }
+
         }
     }
 }

@@ -628,6 +628,14 @@ public class HtmlTree extends Content {
     }
 
     /**
+     * Generates a SECTION tag with role attribute.
+     *
+     * @return an HtmlTree object for the SECTION tag
+     */
+    public static HtmlTree SECTION() {
+        return new HtmlTree(HtmlTag.SECTION);
+    }
+    /**
      * Generates a SMALL tag with some content.
      *
      * @param body content for the tag
