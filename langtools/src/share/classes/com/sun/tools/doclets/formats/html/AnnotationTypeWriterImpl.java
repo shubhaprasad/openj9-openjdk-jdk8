@@ -59,6 +59,10 @@ public class AnnotationTypeWriterImpl extends SubWriterHolderWriter
     protected Type prev;
 
     protected Type next;
+    /**
+     * The HTML tree for main tag.
+     */
+    protected HtmlTree mainTree = HtmlTree.MAIN();
 
     /**
      * @param annotationType the annotation type being documented.
@@ -151,8 +155,11 @@ public class AnnotationTypeWriterImpl extends SubWriterHolderWriter
         String pkgname = (annotationType.containingPackage() != null)?
             annotationType.containingPackage().name(): "";
         String clname = annotationType.name();
-        Content bodyTree = getBody(true, getWindowTitle(clname));
-        addTop(bodyTree);
+        HtmlTree bodyTree = getBody(true, getWindowTitle(clname));
+        HtmlTree htmlTree = (configuration.allowTag(HtmlTag.HEADER))
+                ? HtmlTree.HEADER()
+                : bodyTree;
+        addTop(htmlTree);
         addNavLinks(true, bodyTree);
         bodyTree.addContent(HtmlConstants.START_OF_CLASS_DATA);
         HtmlTree div = new HtmlTree(HtmlTag.DIV);
@@ -169,7 +176,11 @@ public class AnnotationTypeWriterImpl extends SubWriterHolderWriter
                 HtmlStyle.title, headerContent);
         heading.addContent(getTypeParameterLinks(linkInfo));
         div.addContent(heading);
-        bodyTree.addContent(div);
+        if (configuration.allowTag(HtmlTag.MAIN)) {
+            mainTree.addContent(div);
+        } else {
+            bodyTree.addContent(div);
+        }
         return bodyTree;
     }
 
