@@ -630,6 +630,12 @@ public class ConfigurationImpl extends Configuration {
     }
 
     /**
+     * Return true if the tag is allowed for this specific version of HTML.
+     */
+    public boolean allowTag(HtmlTag htmlTag) {
+        return htmlTag.allowTag(this.htmlVersion);
+    }
+    /**
      * Returns whether or not to allow JavaScript in comments.
      * Default is off; can be set true from a command line option.
      * @return the allowScriptInComments
