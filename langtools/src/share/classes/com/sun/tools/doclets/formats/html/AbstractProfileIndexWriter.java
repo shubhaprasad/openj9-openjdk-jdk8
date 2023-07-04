@@ -206,11 +206,11 @@ public abstract class AbstractProfileIndexWriter extends HtmlDocletWriter {
     protected void addIndexContents(Profiles profiles, String text,
             String tableSummary, Content header,Content main) {
         if (profiles.getProfileCount() > 0) {
-            HtmlTree div = new HtmlTree(HtmlTag.DIV);
+            HtmlTree div = (HtmlTree)createTagIfAllowed(HtmlTag.NAV, HtmlTree::NAV, () -> new HtmlTree(HtmlTag.DIV));
             div.addStyle(HtmlStyle.indexHeader);
             addAllClassesLink(div);
             addAllPackagesLink(div);
-            main.addContent(div);
+            header.addContent(div);
             addProfilesList(profiles, text, tableSummary, main);
         }
     }
